@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>atcrowdfunding</display-name>
+
+	<!-- String contextConfigLocation = application.getInitParameter("contextConfigLocation"); -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring/spring-*.xml</param-value>
+	</context-param>
+
+	<!-- 监听器 :
+		监听ServletContext对象创建和销毁:
+			ServletContext对象创建 : 初始化IOC容器.
+				测试环境:ClasspathXmlApplicationContext
+				Web环境:XmlWebApplicationContext   存放到application域中
+			如何获取IOC容器:
+				WebApplicationContext ioc = WebApplicationContextUtils.getWebApplicationContext(application);
+	-->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>com.atguigu.atcrowdfunding.listener.StartSystemListener</listener-class>
+	</listener>
+	
+	
+	
+
+	<!-- 字符编码过滤器 -->
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<!-- 设置响应编码与请求编码是否一致. -->
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+		<!-- 
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		 -->
+	</filter-mapping>
+
+	<!-- 支持 RESTFul风格开发. 将POST请求转换为PUT或 DELETE -->
+	<filter>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HiddenHttpMethodFilter</filter-name>
+		<servlet-name>springmvc</servlet-name>
+	</filter-mapping>
+	
+	<!-- 核心控制器. -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/springmvc-context.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <!-- 
+        只处理.htm和.do的请求.不处理静态资源.
+        .htm 表示页面跳转,不执行业务逻辑.
+        .do 表示需要完成页面逻辑,一般需要操作数据库.
+         -->
+        <url-pattern>*.htm</url-pattern>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>	
+	
+    <!-- 会话超时时间 -->
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+    
+    <!-- 欢迎页面 -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
