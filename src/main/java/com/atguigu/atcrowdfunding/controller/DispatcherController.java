@@ -87,7 +87,7 @@ public class DispatcherController {
 				}
 				
 				for (Permission permission : permissionSelfList) {
-					if(permission.getPid() == null) {
+					if(permission.getPid() == 0) {
 						parent = permission ;
 					}else {
 						permissionMap.get(permission.getPid()).getChildren().add(permission);

@@ -50,7 +50,7 @@
 			<div class="panel panel-default">
               <div class="panel-heading">表单数据<div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-question-sign"></i></div></div>
 			  <div class="panel-body">
-				<form role="form">
+				<form role="form" id="addForm">
 				  <div class="form-group">
 					<label for="exampleInputPassword1">登陆账号</label>
 					<input type="text" class="form-control" id="floginacct" placeholder="请输入登陆账号">
@@ -65,7 +65,8 @@
 					<p class="help-block label label-warning">请输入合法的邮箱地址, 格式为： xxxx@xxxx.com</p>
 				  </div>
 				  <button id="saveBtn" type="button" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 新增</button>
-				  <button type="button" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
+				  <button type="button" class="btn btn-danger" id="refBtn"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
+				 
 				</form>
 			  </div>
 			</div>
@@ -117,6 +118,10 @@
 				});
             });
             
+            
+            $("#refBtn").click(function() {
+				$("#addForm")[0].reset();
+			});
             var index = -1 ;
             $("#saveBtn").click(function(){
             	$.ajax({
